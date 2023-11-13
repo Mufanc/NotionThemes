@@ -39,11 +39,29 @@ const getStorageData = async (params) => {
   });
 };
 
+const showToast = (target) => {
+  const toast = document.querySelector("#mainToast");
+  toast.classList.remove("hidden");
+
+  if (target) {
+    const selected = document.querySelector(".selected");
+    if (selected) {
+      selected.classList.remove("selected");
+    }
+    target.classList.add("selected");
+  }
+
+  setTimeout(() => {
+    toast.classList.add("hidden");
+  }, 3000);
+}
+
 // Set storage data
 const setStorageData = async (params) => {
   return new Promise((resolve, reject) => {
     try {
       chrome.storage.sync.set(params, async (result) => {
+        showToast();
         if (result) {
           resolve(true);
         } else {
@@ -65,34 +83,8 @@ const setTheme = async (theme, target) => {
       img: theme.img,
       style: theme.style,
     },
-    function () {
-      const toast = document.querySelector("#mainToast");
-      toast.classList.remove("hidden");
-
-      const selected = document.querySelector(".selected");
-      if (selected) {
-        selected.classList.remove("selected");
-      }
-      if (target) {
-        target.classList.add("selected");
-      }
-
-      setTimeout(() => {
-        toast.classList.add("hidden");
-      }, 3000);
-    }
+    () => showToast(target)
   );
-};
-
-// Preview fonts
-const previewFonts = (data) => {
-  const select = document.getElementById("selectFont");
-  data.forEach((el) => {
-    let opt = document.createElement("option");
-    opt.value = el;
-    opt.innerHTML = el;
-    select.appendChild(opt);
-  });
 };
 
 // Preview Themes
@@ -173,10 +165,6 @@ window.onload = async () => {
   const data = await getThemes();
   if (data !== null) previewThemes(data);
 
-  // Fonts
-  const { fonts } = await getFonts();
-  if (fonts !== null) previewFonts(fonts);
-
   // Selected font
   fontSelectConfig();
 
@@ -189,10 +177,13 @@ window.onload = async () => {
   resetBtn.addEventListener("click", () => {
     resetTheme();
   });
+
   // selectFont
   const selectFont = document.querySelector("#selectFont");
-  selectFont.addEventListener("change", async (event) => {
-    console.log(event.target.value);
-    await setStorageData({ font: event.target.value });
+  selectFont.addEventListener('keydown', async (event) => {
+    if (event.key == 'Enter') {
+      console.log(event.target.value);
+      await setStorageData({ font: event.target.value });
+    }
   });
 };

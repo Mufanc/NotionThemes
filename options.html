@@ -129,9 +129,10 @@
         background: #af4e4e;
       }
       .selectFont {
-        padding: 10px 0px;
-        border-radius: 5px;
+        padding: 10px;
         min-width: 200px;
+        border: 2px solid;
+        font-family: monospace;
       }
       .navBar {
         margin-bottom: 5%;
@@ -209,11 +210,9 @@
       <h1>⚙️ Configuration</h1>
 
       <div>
-        <h2>🔮 Font</h2>
+        <h2>🔮 Font&nbsp;&nbsp;<a href="https://fonts.google.com/">choose fonts ...</a></h2>
         <label>
-          <select id="selectFont" class="selectFont" name="selectFont">
-            <option value="Default">Default</option>
-          </select>
+          <input id="selectFont" class="selectFont" name="selectFont" placeholder="Default" />
         </label>
       </div>
       <br />

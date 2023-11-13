@@ -54,12 +54,14 @@ const getTheme = async () => {
       style.type = "text/css";
 
       if (font && font !== "Default") {
+        const url = new URL('https://fonts.googleapis.com/css2');
+        const search = new URLSearchParams();
+        font.split(/, ?/).forEach(f => search.append('family', `${f}:wght@300;400;500;700`));
+        search.append('display', 'swap')
+        url.search = search.toString();
         customFont = `
-          @import url('https://fonts.googleapis.com/css2?family=${font.replace(
-            " ",
-            "+"
-          )}:wght@300;400;500;700&display=swap');
-          #notion-app * {
+          @import url('${url.toString()}');
+          #notion-app :not(.notion-code-block *) {
             font-family:${font}, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol" !important;
           }
       `;
