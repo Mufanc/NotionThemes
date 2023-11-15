@@ -61,7 +61,7 @@ const getTheme = async () => {
         url.search = search.toString();
         customFont = `
           @import url('${url.toString()}');
-          #notion-app :not(.notion-code-block *) {
+          #notion-app :not(.notion-code-block *, [style^="font-family"][style*="monospace"]) {
             font-family:${font}, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol" !important;
           }
       `;
